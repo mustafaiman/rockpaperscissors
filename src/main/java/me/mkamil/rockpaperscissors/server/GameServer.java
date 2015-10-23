@@ -19,11 +19,13 @@ public class GameServer {
     }
 
     public void runServer() {
-        try {
-            Socket client = serverSocket.accept();
-            new ClientThread(client).start();
-        } catch (IOException e) {
-            System.out.println("Lost connection to client");
+        while (true) {
+            try {
+                Socket client = serverSocket.accept();
+                new ClientThread(client).start();
+            } catch (IOException e) {
+                System.out.println("Connection cannot be established.");
+            }
         }
 
     }

@@ -10,7 +10,7 @@ public class App {
 
     public static void main(String[] args) {
         try {
-            if (args[0].contains(".") || args[0].equals("localhost")) {
+            if ( args.length > 1) {
                 GameClient client = new GameClient(args[0], Integer.parseInt(args[1]));
                 client.run();
             } else {
