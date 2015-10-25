@@ -15,16 +15,16 @@ public class ShapeMessage {
     public ShapeMessage() {
     }
 
-    public ShapeMessage(String message) throws Exception{
+    public ShapeMessage(String message) throws InvalidMessageException{
         String parts[] = message.split("\r\n");
         if( !parts[0].equals("SHAPE") ) {
-            throw new Exception("Not a SHAPE message");
+            throw new InvalidMessageException("Expected SHAPE");
         }
         for (int i = 1; i < parts.length; i++) {
             try {
                 shapes.add(Shape.valueOf(parts[i]));
             } catch (Exception e) {
-                throw new Exception("Not a SHAPE message");
+                throw new InvalidMessageException("Expected SHAPE");
             }
         }
     }

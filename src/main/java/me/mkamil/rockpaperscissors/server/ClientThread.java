@@ -1,7 +1,9 @@
 package me.mkamil.rockpaperscissors.server;
 
-import me.mkamil.rockpaperscissors.message.ResultMessage;
+import me.mkamil.rockpaperscissors.entity.GameResult;
 import me.mkamil.rockpaperscissors.entity.Shape;
+import me.mkamil.rockpaperscissors.message.InvalidMessageException;
+import me.mkamil.rockpaperscissors.message.ResultMessage;
 import me.mkamil.rockpaperscissors.message.ShapeMessage;
 
 import java.io.BufferedReader;
@@ -45,15 +47,15 @@ public class ClientThread extends Thread {
                 ResultMessage resultMessage = new ResultMessage();
                 for (int i = 0; i < clientShapes.size(); i++) {
                     Shape serverShape = Shape.values()[random.nextInt(Shape.values().length)];
-                    int result = serverShape.play(clientShapes.get(i));
+                    GameResult result = serverShape.play(clientShapes.get(i));
                     switch (result) {
-                        case 0:
+                        case TIE:
                             tie++;
                             break;
-                        case 1:
+                        case WIN:
                             serverWin++;
                             break;
-                        case -1:
+                        case LOSS:
                             clientWin++;
                             break;
                     }
@@ -64,10 +66,10 @@ public class ClientThread extends Thread {
                 resultMessage.setTie(tie);
 
                 writer.write(resultMessage.getProtocolMessage());
-            } catch (IOException e) {
+            } catch (InvalidMessageException | IOException e) {
                 e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
+                closeConnection();
+                return;
             }
         }
     }

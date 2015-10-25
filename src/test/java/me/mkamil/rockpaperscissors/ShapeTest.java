@@ -1,6 +1,7 @@
 package me.mkamil.rockpaperscissors;
 
 import junit.framework.TestCase;
+import me.mkamil.rockpaperscissors.entity.GameResult;
 import me.mkamil.rockpaperscissors.entity.Shape;
 import org.junit.Test;
 
@@ -11,22 +12,22 @@ public class ShapeTest extends TestCase {
 
     @Test
     public void testRock() {
-        assertEquals(-1, Shape.ROCK.play(Shape.PAPER));
-        assertEquals(0, Shape.ROCK.play(Shape.ROCK));
-        assertEquals(1, Shape.ROCK.play(Shape.SCISSORS));
+        assertEquals(GameResult.LOSS, Shape.ROCK.play(Shape.PAPER));
+        assertEquals(GameResult.TIE, Shape.ROCK.play(Shape.ROCK));
+        assertEquals(GameResult.WIN, Shape.ROCK.play(Shape.SCISSORS));
     }
 
     @Test
     public void testPaper() {
-        assertEquals(-1, Shape.PAPER.play(Shape.SCISSORS));
-        assertEquals(0, Shape.PAPER.play(Shape.PAPER));
-        assertEquals(1, Shape.PAPER.play(Shape.ROCK));
+        assertEquals(GameResult.LOSS, Shape.PAPER.play(Shape.SCISSORS));
+        assertEquals(GameResult.TIE, Shape.PAPER.play(Shape.PAPER));
+        assertEquals(GameResult.WIN, Shape.PAPER.play(Shape.ROCK));
     }
 
     @Test
     public void testScissorsk() {
-        assertEquals(-1, Shape.SCISSORS.play(Shape.ROCK));
-        assertEquals(0, Shape.SCISSORS.play(Shape.SCISSORS));
-        assertEquals(1, Shape.SCISSORS.play(Shape.PAPER));
+        assertEquals(GameResult.LOSS, Shape.SCISSORS.play(Shape.ROCK));
+        assertEquals(GameResult.TIE, Shape.SCISSORS.play(Shape.SCISSORS));
+        assertEquals(GameResult.WIN, Shape.SCISSORS.play(Shape.PAPER));
     }
 }

@@ -14,13 +14,13 @@ public enum Shape {
         SCISSORS.winsOver = PAPER;
     }
 
-    public int play(Shape opponent) {
+    public GameResult play(Shape opponent) {
         if(this == opponent) {
-            return 0;
+            return GameResult.TIE;
         } else if(this.winsOver == opponent) {
-            return 1;
+            return GameResult.WIN;
         } else {
-            return -1;
+            return GameResult.LOSS;
         }
     }
 }

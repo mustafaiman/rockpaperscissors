@@ -1,7 +1,8 @@
 package me.mkamil.rockpaperscissors.client;
 
-import me.mkamil.rockpaperscissors.message.ResultMessage;
+import me.mkamil.rockpaperscissors.entity.GameResult;
 import me.mkamil.rockpaperscissors.entity.Shape;
+import me.mkamil.rockpaperscissors.message.ResultMessage;
 import me.mkamil.rockpaperscissors.message.ShapeMessage;
 
 import java.io.BufferedReader;
@@ -37,6 +38,7 @@ public class GameClient {
         this.hostPort = hostPort;
 
         this.socket = new Socket(hostAddress, hostPort);
+        this.socket.setKeepAlive(true);
         this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
         this.writer = new DataOutputStream(socket.getOutputStream());
 
@@ -100,11 +102,11 @@ public class GameClient {
             ArrayList<Shape> serverShapes = resultMessage.getShapes();
             System.out.println("Result:");
             for (int i=0; i<clientShapes.size(); i++) {
-                int res = clientShapes.get(i).play(serverShapes.get(i));
+                GameResult res = clientShapes.get(i).play(serverShapes.get(i));
                 String resultString = "";
-                if(res == 0)
+                if(res == GameResult.TIE)
                     resultString = "(tie)";
-                else if(res == 1)
+                else if(res == GameResult.WIN)
                     resultString = "(client wins)";
                 else
                     resultString = "(server wins)";
@@ -117,8 +119,7 @@ public class GameClient {
         } catch (IOException e) {
             e.printStackTrace();
             state = GameClientState.FINISH;
-        } catch (Exception e) {
-            e.printStackTrace();
+            return;
         }
         state = GameClientState.START;
     }

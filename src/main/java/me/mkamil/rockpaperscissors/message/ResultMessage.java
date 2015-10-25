@@ -18,33 +18,32 @@ public class ResultMessage {
 
     }
 
-    public ResultMessage(String messageString)
-            throws Exception {
+    public ResultMessage(String messageString) {
         String parts[] = messageString.split("\r\n");
         if( !parts[0].equals("RESULT")) {
-            throw new Exception("Not a RESULT message");
+            throw new InvalidMessageException("Expected RESULT");
         }
         for (int i = 1; i < parts.length - 3; i++) {
             try {
                 shapes.add(Shape.valueOf(parts[i]));
             } catch (Exception e) {
-                throw new Exception("Not a RESULT message");
+                throw new InvalidMessageException("Expected RESULT");
             }
         }
         if(parts[parts.length-3].split("=")[0].equals("CLIENT")) {
             clientWin = Integer.parseInt(parts[parts.length-3].split("=")[1]);
         } else {
-            throw new Exception("Not a RESULT message");
+            throw new InvalidMessageException("Expected RESULT");
         }
         if(parts[parts.length-2].split("=")[0].equals("TIE")) {
             tie = Integer.parseInt(parts[parts.length-2].split("=")[1]);
         } else {
-            throw new Exception("Not a RESULT message");
+            throw new InvalidMessageException("Expected RESULT");
         }
         if(parts[parts.length-1].split("=")[0].equals("SERVER")) {
             serverWin = Integer.parseInt(parts[parts.length-1].split("=")[1]);
         } else {
-            throw new Exception("Not a RESULT message");
+            throw new InvalidMessageException("Expected RESULT");
         }
     }
 
