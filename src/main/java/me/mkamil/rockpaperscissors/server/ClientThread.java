@@ -40,6 +40,9 @@ public class ClientThread extends Thread {
         while (true) {
             try {
                 ShapeMessage shapeMessage = new ShapeMessage(readAShapeMessage());
+                System.out.println("Client has sent " + shapeMessage.size() + " shapes...");
+                System.out.println("Shapes are chosen...");
+                System.out.println("Results are as follows:");
                 ArrayList<Shape> clientShapes = shapeMessage.asArrayList();
                 int clientWin = 0;
                 int tie = 0;
@@ -59,6 +62,9 @@ public class ClientThread extends Thread {
                             clientWin++;
                             break;
                     }
+                    System.out.println("Round-1: client: " + clientShapes.get(i)
+                            + ", server : " + serverShape
+                            + " " + explainingMessage(result));
                     resultMessage.addShape(serverShape);
                 }
                 resultMessage.setClientWin(clientWin);
@@ -68,9 +74,20 @@ public class ClientThread extends Thread {
                 writer.write(resultMessage.getProtocolMessage());
             } catch (InvalidMessageException | IOException e) {
                 e.printStackTrace();
+                System.out.println("Terminate the connection...");
                 closeConnection();
                 return;
             }
+        }
+    }
+
+    private String explainingMessage(GameResult gameResult) {
+        if (gameResult.equals(GameResult.LOSS)) {
+            return "(client wins)";
+        } else if(gameResult.equals(GameResult.TIE)) {
+            return "(tie)";
+        } else {
+            return "(server wins)";
         }
     }
 
