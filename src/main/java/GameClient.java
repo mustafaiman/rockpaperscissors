@@ -51,7 +51,7 @@ public class GameClient {
     }
 
     private void handleStateStart() {
-        System.out.println("Enter the number of rounds (Press Q to quit): ");
+        System.out.print("Enter the number of rounds (Press Q to quit): ");
         String inp = scanner.next();
         if("Q".equals(inp) || "q".equals(inp)) {
             state = GameClientState.FINISH;
@@ -78,7 +78,7 @@ public class GameClient {
             String s;
             Shape shape = null;
             do {
-                System.out.println("Round-" + (i+1) + ":");
+                System.out.print("Round-" + (i+1) + ": ");
                 s = scanner.next();
                 try {
                     shape = Shape.valueOf(s);
