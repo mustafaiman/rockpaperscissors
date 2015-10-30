@@ -1,8 +1,6 @@
 package me.mkamil.rockpaperscissors;
 
 import junit.framework.TestCase;
-import me.mkamil.rockpaperscissors.entity.GameResult;
-import me.mkamil.rockpaperscissors.entity.Shape;
 import org.junit.Test;
 
 /**

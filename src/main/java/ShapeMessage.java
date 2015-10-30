@@ -1,7 +1,3 @@
-package me.mkamil.rockpaperscissors.message;
-
-import me.mkamil.rockpaperscissors.entity.Shape;
-
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 

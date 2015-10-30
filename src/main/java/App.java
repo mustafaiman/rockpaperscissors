@@ -1,8 +1,3 @@
-package me.mkamil.rockpaperscissors;
-
-import me.mkamil.rockpaperscissors.client.GameClient;
-import me.mkamil.rockpaperscissors.server.GameServer;
-
 /**
  * Created by mustafaiman on 22/10/15.
  */

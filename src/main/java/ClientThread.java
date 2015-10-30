@@ -1,11 +1,3 @@
-package me.mkamil.rockpaperscissors.server;
-
-import me.mkamil.rockpaperscissors.entity.GameResult;
-import me.mkamil.rockpaperscissors.entity.Shape;
-import me.mkamil.rockpaperscissors.message.InvalidMessageException;
-import me.mkamil.rockpaperscissors.message.ResultMessage;
-import me.mkamil.rockpaperscissors.message.ShapeMessage;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;

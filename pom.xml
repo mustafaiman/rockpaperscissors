@@ -25,7 +25,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>me.mkamil.rockpaperscissors.App</mainClass>
+                            <mainClass>App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

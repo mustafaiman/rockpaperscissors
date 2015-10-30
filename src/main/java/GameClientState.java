@@ -1,5 +1,3 @@
-package me.mkamil.rockpaperscissors.client;
-
 /**
  * Created by mustafaiman on 22/10/15.
  */

@@ -1,7 +1,6 @@
 package me.mkamil.rockpaperscissors;
 
 import junit.framework.TestCase;
-import me.mkamil.rockpaperscissors.message.ShapeMessage;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

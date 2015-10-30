@@ -1,5 +1,3 @@
-package me.mkamil.rockpaperscissors.message;
-
 /**
  * Created by mustafaiman on 25/10/15.
  */
