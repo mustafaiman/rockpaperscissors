@@ -15,16 +15,22 @@ public class ClientThread extends Thread {
     private final Socket socket;
     private final BufferedReader reader;
     private final DataOutputStream writer;
+    private final int clientNum;
 
     private final Random random = new Random();
 
-    public ClientThread(Socket socket)
+    private int clientWin;
+    private int tie;
+    private int serverWin;
+
+    public ClientThread(Socket socket, int clientNum)
             throws IOException {
         this.socket = socket;
         this.socket.setKeepAlive(true);
 
         this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
         this.writer = new DataOutputStream(socket.getOutputStream());
+        this.clientNum = clientNum;
     }
 
     @Override
@@ -32,44 +38,51 @@ public class ClientThread extends Thread {
         while (true) {
             try {
                 ShapeMessage shapeMessage = new ShapeMessage(readAShapeMessage());
-                System.out.println("Client has sent " + shapeMessage.size() + " shapes...");
-                System.out.println("Shapes are chosen...");
-                System.out.println("Results are as follows:");
+                printWithClientNum("Client has sent " + shapeMessage.size() + " shapes...");
+                printWithClientNum("Shapes are chosen...");
+                printWithClientNum("Results are as follows:");
                 ArrayList<Shape> clientShapes = shapeMessage.asArrayList();
-                int clientWin = 0;
-                int tie = 0;
-                int serverWin = 0;
+                int roundClientWin = 0;
+                int roundTie = 0;
+                int roundServerWin = 0;
                 ResultMessage resultMessage = new ResultMessage();
                 for (int i = 0; i < clientShapes.size(); i++) {
                     Shape serverShape = Shape.values()[random.nextInt(Shape.values().length)];
                     GameResult result = serverShape.play(clientShapes.get(i));
                     switch (result) {
                         case TIE:
-                            tie++;
+                            roundTie++;
                             break;
                         case WIN:
-                            serverWin++;
+                            roundServerWin++;
                             break;
                         case LOSS:
-                            clientWin++;
+                            roundClientWin++;
                             break;
                     }
-                    System.out.println("Round-1: client: " + clientShapes.get(i)
-                            + ", server : " + serverShape
-                            + " " + explainingMessage(result));
+                    printWithClientNum(
+                            "Round-1: client: " + clientShapes.get(i) + ", server : " + serverShape + " " + explainingMessage(
+                                    result));
                     resultMessage.addShape(serverShape);
                 }
-                resultMessage.setClientWin(clientWin);
-                resultMessage.setServerWin(serverWin);
-                resultMessage.setTie(tie);
+                clientWin += roundClientWin;
+                tie += roundTie;
+                serverWin += roundServerWin;
+                resultMessage.setClientWin(roundClientWin);
+                resultMessage.setServerWin(roundServerWin);
+                resultMessage.setTie(roundTie);
 
                 writer.write(resultMessage.getProtocolMessage());
             } catch (InvalidMessageException | IOException e) {
-                e.printStackTrace();
-                System.out.println("Terminate the connection...");
+                printWithClientNum("Terminate the connection...");
+                printWithClientNum("Client: " + clientWin + " Tie: " + tie + " Server: " + serverWin);
+                System.out.println();
                 closeConnection();
                 return;
+            } catch (Exception e) {
+                printWithClientNum("Other exception");
             }
+            System.out.println();
         }
     }
 
@@ -90,6 +103,8 @@ public class ClientThread extends Thread {
         boolean end = false;
         while (!end) {
             int size = reader.read(buffer);
+            if(size == -1)
+                throw new IOException();
             for (int i = 0; i < size; i++) {
                 messageString = messageString + buffer[i];
             }
@@ -106,5 +121,9 @@ public class ClientThread extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void printWithClientNum(String str) {
+        System.out.println("THREAD-" + clientNum + ": " + str);
     }
 }

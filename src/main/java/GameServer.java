@@ -10,6 +10,8 @@ public class GameServer {
     private final int hostPort;
     private final ServerSocket serverSocket;
 
+    private int threadCount;
+
     public GameServer(int hostPort) throws IOException {
         this.hostPort = hostPort;
 
@@ -20,7 +22,8 @@ public class GameServer {
         while (true) {
             try {
                 Socket client = serverSocket.accept();
-                new ClientThread(client).start();
+                threadCount++;
+                new ClientThread(client, threadCount).start();
             } catch (IOException e) {
                 System.out.println("Connection cannot be established.");
             }
